@@ -1,8 +1,9 @@
 # Final Exam Grade Calculator Web App Deployed to Azure using CI/CD
 ### Status ..
-![License](https://img.shields.io/badge/License-MIT-green.svg)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![run-tests](../../actions/workflows/build_deploy.yml/badge.svg)](../../actions/workflows/build_deploy.yml)
-![up badge](https://img.shields.io/website-up-down-green-red/http/webapp-xiezc3pdz7pmo.azurewebsites.net.svg)
+[![up badge](https://img.shields.io/website-up-down-green-red/http/webapp-xiezc3pdz7pmo.azurewebsites.net.svg)](
+    https://webapp-xiezc3pdz7pmo.azurewebsites.net/)
 
 This repo contains the source code for a Final Exam Grade Calculator,
 something that many college (and high school) students use.

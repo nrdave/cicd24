@@ -91,6 +91,8 @@ def calculator_ui(course_name: str, base_key: int) -> None:
 
 
 def ui() -> None:
+    st.set_page_config(page_title="Final Exam Grade Calculator")
+
     st.title("Final Exam Grade Calculator")
     st.subheader(".. on Azure")
 

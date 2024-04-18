@@ -90,13 +90,17 @@ def calculator_ui(course_name: str, base_key: int) -> None:
     )
 
 
-if __name__ == "__main__":
+def ui() -> None:
     st.title("Final Exam Grade Calculator")
     st.subheader(".. on Azure")
 
     num_courses = int(
         st.number_input(
-            "Enter the number of courses", min_value=0, value=1, step=1, format="%d"
+            "Enter the number of courses",
+            min_value=0,
+            value=1,
+            step=1,
+            format="%d"
         )
     )
 
@@ -109,7 +113,13 @@ if __name__ == "__main__":
 
     # The calculator UI has multiple widgets (it increments the key for each)
     # So, I have to ensure that a. the base key for that widget isn't 0, and
-    # b. Each UI has enough keys available. This is what the (i + 1) * ST_WIDGETS_PER_UI does
+    # b. Each UI has enough keys available. This is what the (i + 1) *
+    # ST_WIDGETS_PER_UI does
     for i in range(0, num_courses):
         if course_names[i]:
             calculator_ui(course_names[i], (i + 1) * ST_WIDGETS_PER_UI)
+
+
+if __name__ == "__main__":
+    logger.info("Starting App")
+    ui()

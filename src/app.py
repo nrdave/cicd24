@@ -29,33 +29,47 @@ def determine_minimum_final_grade(
     """
     try:
         required_grade = (
-            (desired_grade - (1 - final_weight) *
-             current_course_grade) / final_weight
-        )
+            desired_grade - (1 - final_weight) * current_course_grade
+        ) / final_weight
     except ZeroDivisionError:
         required_grade = 0
-        logger.info(
-            "0 passed as a final exam weight. Setting required_grade to 0"
-        )
+        logger.debug(
+            "0 passed as a final exam weight. Setting required_grade to 0")
 
     logger.info(f"Returning {required_grade}")
     return max(required_grade, 0)
 
 
-def calculator_ui(course_name: str) -> None:
+# Value used to track how many Streamlit widgets can be created within a singular calculator UI
+# Used to determine the base key for each UI
+ST_WIDGETS_PER_UI = 10
+
+
+def calculator_ui(course_name: str, base_key: int) -> None:
     """Generate a Final Grade calculator UI for a given course"""
     st.header(course_name)
 
     desired_grade = st.number_input(
-        "Enter your desired grade (in percent)", min_value=0, value=90, format="%d")
-    current_grade = st.number_input("Enter your current grade (in percent)")
+        "Enter your desired grade (in percent)",
+        min_value=0,
+        value=90,
+        format="%d",
+        key=base_key,
+    )
+    current_grade = st.number_input(
+        "Enter your current grade (in percent)", key=base_key + 1
+    )
     final_weight = st.number_input(
         (
             "Enter the weight of the final exam (how "
             "much of the overall course grade is "
             "determined by the final exam) (in percent)"
         ),
-        0, 100, 20, format="%d"
+        0,
+        100,
+        20,
+        format="%d",
+        key=base_key + 2,
     )
 
     final_grade = determine_minimum_final_grade(
@@ -79,4 +93,23 @@ def calculator_ui(course_name: str) -> None:
 if __name__ == "__main__":
     st.title("Final Exam Grade Calculator")
     st.subheader(".. on Azure")
-    calculator_ui("test")
+
+    num_courses = int(
+        st.number_input(
+            "Enter the number of courses", min_value=0, value=1, step=1, format="%d"
+        )
+    )
+
+    course_names = [""] * num_courses
+
+    # Streamlit needed me to provide widget keys (probably because of the for loop)
+    # So, I provide the index of the array as the key
+    for i in range(0, num_courses):
+        course_names[i] = st.text_input("Course name: ", key=i)
+
+    # The calculator UI has multiple widgets (it increments the key for each)
+    # So, I have to ensure that a. the base key for that widget isn't 0, and
+    # b. Each UI has enough keys available. This is what the (i + 1) * ST_WIDGETS_PER_UI does
+    for i in range(0, num_courses):
+        if course_names[i]:
+            calculator_ui(course_names[i], (i + 1) * ST_WIDGETS_PER_UI)

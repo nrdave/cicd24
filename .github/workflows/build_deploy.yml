@@ -58,8 +58,12 @@ jobs:
           name: python-app
           path: |
             .
+            !.git/
+            !.gitignore
             !venv/
             !tests/
+            !.pytest_cache/
+            !instructions/
             !*/__pycache__
 
   deploy:
